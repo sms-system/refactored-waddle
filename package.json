@@ -1,0 +1,10 @@
+{
+  "name": "git-client-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Serge Smirnov <sms-system@shri2018.yaconnect.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
