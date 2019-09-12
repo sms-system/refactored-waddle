@@ -4,6 +4,9 @@
   "main": "index.js",
   "author": "Serge Smirnov <sms-system@shri2018.yaconnect.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=10.11.0"
+  },
   "dependencies": {
     "express": "^4.17.1"
   }
