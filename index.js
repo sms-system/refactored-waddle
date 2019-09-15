@@ -6,7 +6,10 @@ const { GitReposDir, GitRepo } = require('./lib/git-client')
 const PORT = 8080
 const REPOS_DIR = '/data/Desktop/yandex'
 
-const errHandler = (res, code) => (err) => res.status(code).json({ 'errorCode': err })
+const errHandler = (res, code) => (err) => {
+  res.setHeader('Content-Type', 'application/json; charset=utf-8')
+  res.status(code).json({ 'errorCode': err })
+}
 
 const app = express()
 app.use(bodyParser.json())
