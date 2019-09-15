@@ -71,7 +71,7 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
 
 function getTreeHandler (req, res) {
   const { commitHash, path } = req.params
-  req.repo.getTree(commitHash, path, false,
+  req.repo.getTree(commitHash, path, {},
     (data) => res.write(data),
     errHandler(res, 500),
     () => res.end()
