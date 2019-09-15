@@ -4,7 +4,11 @@ const bodyParser = require('body-parser')
 const { GitReposDir, GitRepo } = require('./lib/git-client')
 
 const PORT = 8080
-const REPOS_DIR = '/data/Desktop/yandex'
+const REPOS_DIR = process.argv[2]
+
+if (!REPOS_DIR) {
+  throw 'Missed argument. Usage: "npm run start -- /path/to/repos" or "yarn start /path/to/repos" '
+}
 
 const errHandler = (res, code) => (err) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8')
@@ -110,4 +114,4 @@ app.post('/api/repos', (req, res) => {
     .catch(errHandler(res, 500))
 })
 
-app.listen(PORT, () => console.log('Server started'))
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`))
