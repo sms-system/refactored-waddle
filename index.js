@@ -1,6 +1,5 @@
 const express = require('express')
 const mime = require('mime-types')
-const bodyParser = require('body-parser')
 const { GitReposDir, GitRepo } = require('./lib/git-client')
 
 const PORT = 8080
@@ -16,7 +15,7 @@ const errHandler = (res, code) => (err) => {
 }
 
 const app = express()
-app.use(bodyParser.json())
+app.use(express.json())
 
 app.param('repositoryId', (req, res, next, repositoryId) => {
   try {
