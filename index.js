@@ -1,3 +1,4 @@
+const cluster = require('cluster')
 const express = require('express')
 const mime = require('mime-types')
 const { GitReposDir, GitRepo } = require('./lib/git-client')
@@ -9,9 +10,9 @@ if (!REPOS_DIR) {
   throw 'Missed argument. Usage: "npm run start -- /path/to/repos" or "yarn start /path/to/repos" '
 }
 
-const errHandler = (res, code) => (err) => {
+const errHandler = (res, code) => (errorCode) => {
   res.setHeader('Content-Type', 'application/json; charset=utf-8')
-  res.status(code).json({ 'errorCode': err })
+  res.status(code).json({ errorCode })
 }
 
 const app = express()
@@ -97,18 +98,19 @@ app.delete('/api/repos/:dirRepositoryId', (req, res) => {
     .catch(errHandler(res, 500))
 })
 
-app.delete('/api/repos/:dirRepositoryId', (req, res) => {
-  const { dirRepositoryId } = req.params
-  req.reposDir.removeRepo(dirRepositoryId)
-    .then(() => res.json({ status: 'OK' }))
-    .catch(errHandler(res, 500))
-})
-
 app.post('/api/repos', (req, res) => {
   const { url, repositoryId } = req.body
   req.reposDir.cloneRepo(url, repositoryId)
     .then(() => res.json({ status: 'OK' }))
     .catch(errHandler(res, 500))
+})
+
+app.get('/api/repos/:repositoryId/charsCount/:commitHash', (req, res) => {
+  const { commitHash } = req.params
+  req.repo.getSymbolsCount(commitHash, true,
+    errHandler(res, 500),
+    (data) => res.json(data)
+  )
 })
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`))

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "mime-types": "^2.1.24"
+    "mime-types": "^2.1.24",
+    "p-queue": "^6.1.1"
   }
 }
