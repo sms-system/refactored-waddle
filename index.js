@@ -49,9 +49,12 @@ app.get('/api/repos', async (req, res) => {
   res.json(await req.reposDir.list())
 })
 
+// Send page positiion with `page` query
+// Example: /api/repos/cool-timer/commits/master?page=3
 app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
   const { commitHash } = req.params
-  req.repo.getCommits(commitHash,
+  const { page } = req.query
+  req.repo.getCommits(commitHash, page,
     (data) => res.write(data),
     errHandler(res, 500),
     () => res.end()
@@ -67,22 +70,17 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
   )
 })
 
-app.get('/api/repos/:repositoryId', (req, res) => {
-  req.repo.getTree(undefined, undefined, false,
-    (data) => res.write(data),
-    errHandler(res, 500),
-    () => res.end()
-  )
-})
-
-app.get('/api/repos/:repositoryId/tree/:commitHash/:path(*)', (req, res) => {
+function getTreeHandler (req, res) {
   const { commitHash, path } = req.params
   req.repo.getTree(commitHash, path, false,
     (data) => res.write(data),
     errHandler(res, 500),
     () => res.end()
   )
-})
+}
+
+app.get('/api/repos/:repositoryId', getTreeHandler)
+app.get('/api/repos/:repositoryId/tree/:commitHash/:path(*)', getTreeHandler)
 
 app.get('/api/repos/:repositoryId/blob/:commitHash/:pathToFile(*)', blobMiddleware, (req, res) => {
   const { commitHash, pathToFile } = req.params
