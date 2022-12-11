@@ -11,7 +11,7 @@
     "node": ">=10.11.0"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "mime-types": "^2.1.24",
     "p-queue": "^6.1.1"
   }
